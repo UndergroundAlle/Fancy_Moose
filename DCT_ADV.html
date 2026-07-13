@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>DCT Advocacy Roadmap — Mentorship with RJ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0A1519; --panel:#0F1F25; --panel-2:#122A31;
+    --line:#1E3840; --line-strong:#2C4A52;
+    --text:#E7EFF1; --dim:#8AA0A8;
+    --teal:#2DD4BF; --teal-deep:#0E8C8C;
+    --amber:#F5B849; --amber-dim:#C9A24B;
+    --warm-panel:#1C1710; --warm-text:#E9E1CF;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    line-height:1.5; -webkit-font-smoothing:antialiased;
+    padding:0 20px 64px;
+  }
+  .wrap{max-width:820px; margin:0 auto;}
+
+  /* ── Masthead ── */
+  .masthead{
+    position:relative; padding:48px 0 30px;
+    background:radial-gradient(120% 90% at 12% -10%, rgba(45,212,191,.12), transparent 60%);
+  }
+  .eyebrow{
+    font-family:'JetBrains Mono',monospace; font-size:12px; letter-spacing:2.5px;
+    color:var(--teal); text-transform:uppercase; margin:0 0 14px;
+  }
+  h1{
+    font-family:'Space Grotesk',sans-serif; font-weight:700;
+    font-size:clamp(30px,6vw,46px); line-height:1.02; margin:0;
+    letter-spacing:-0.5px;
+  }
+  .h1-rule{width:56px; height:3px; background:var(--teal); margin:16px 0 14px; border-radius:2px;}
+  .sub{color:var(--dim); font-size:15px; margin:0;}
+
+  /* ── Overall telemetry ── */
+  .telemetry{margin-top:26px;}
+  .ov-track{
+    height:10px; background:var(--panel); border:1px solid var(--line);
+    border-radius:20px; overflow:hidden;
+  }
+  .ov-fill{
+    height:100%; width:0%; border-radius:20px;
+    background:linear-gradient(90deg,var(--amber),#FFCF7A);
+    box-shadow:0 0 12px rgba(245,184,73,.45);
+    transition:width .55s cubic-bezier(.2,.7,.2,1);
+  }
+  .ov-readout{
+    display:flex; align-items:center; gap:8px; margin-top:10px;
+    font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--dim);
+    letter-spacing:1px;
+  }
+  .ov-readout b{color:var(--teal); font-weight:500;}
+  .dot{
+    width:8px; height:8px; border-radius:50%; background:var(--amber);
+    box-shadow:0 0 8px rgba(245,184,73,.7); animation:pulse 2.4s ease-in-out infinite;
+  }
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.35;}}
+
+  /* ── Roadmap rail ── */
+  .roadmap{position:relative; margin-top:40px;}
+  .roadmap::before{
+    content:''; position:absolute; left:8px; top:14px; bottom:14px; width:2px;
+    background:var(--line);
+  }
+  .phase{position:relative; padding-left:46px; margin-bottom:22px;}
+  .node{
+    position:absolute; left:0; top:20px; width:18px; height:18px; border-radius:50%;
+    border:2px solid var(--teal-deep); background:var(--bg); z-index:1;
+    transition:background .35s, border-color .35s, box-shadow .35s;
+  }
+  .phase.online .node{
+    background:var(--amber); border-color:var(--amber);
+    box-shadow:0 0 0 4px rgba(245,184,73,.12), 0 0 14px rgba(245,184,73,.55);
+    animation:nodeglow 3s ease-in-out infinite;
+  }
+  @keyframes nodeglow{0%,100%{box-shadow:0 0 0 4px rgba(245,184,73,.10),0 0 12px rgba(245,184,73,.45);}50%{box-shadow:0 0 0 5px rgba(245,184,73,.16),0 0 18px rgba(245,184,73,.65);}}
+
+  .card{
+    background:var(--panel-2); border:1px solid var(--line);
+    border-radius:14px; padding:20px 22px;
+  }
+  .phase-head{display:flex; flex-wrap:wrap; align-items:center; gap:12px;}
+  .phase-title{
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:19px;
+    margin:0; color:var(--text);
+  }
+  .chip{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:1px;
+    color:var(--teal); background:rgba(45,212,191,.10);
+    border:1px solid rgba(45,212,191,.25); padding:3px 9px; border-radius:6px;
+    white-space:nowrap;
+  }
+  .why{color:var(--dim); font-size:13.5px; font-style:italic; margin:8px 0 0;}
+
+  .mini{display:flex; align-items:center; gap:10px; margin:14px 0 4px;}
+  .mini-count{font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--dim); flex:0 0 auto;}
+  .mini-track{flex:1; height:5px; background:var(--panel); border-radius:10px; overflow:hidden;}
+  .mini-fill{height:100%; width:0%; background:var(--teal); border-radius:10px; transition:width .45s ease;}
+
+  .goals{margin-top:12px; display:flex; flex-direction:column; gap:3px;}
+  .goal{
+    display:flex; align-items:flex-start; gap:12px; padding:9px 10px;
+    border-radius:9px; cursor:pointer; transition:background .18s;
+  }
+  .goal:hover{background:rgba(255,255,255,.02);}
+  .goal.done{background:rgba(245,184,73,.055);}
+  .goal input[type=checkbox]{
+    appearance:none; -webkit-appearance:none;
+    width:20px; height:20px; flex:0 0 20px; margin:1px 0 0;
+    border:2px solid var(--line-strong); border-radius:5px; background:var(--panel);
+    cursor:pointer; position:relative;
+    transition:border-color .18s, background .18s, box-shadow .18s;
+  }
+  .goal input[type=checkbox]:checked{
+    border-color:var(--amber); background:var(--amber);
+    box-shadow:0 0 0 3px rgba(245,184,73,.14), 0 0 10px rgba(245,184,73,.35);
+  }
+  .goal input[type=checkbox]:checked::after{
+    content:''; position:absolute; left:6px; top:2px; width:4px; height:9px;
+    border:solid #0A1519; border-width:0 2px 2px 0; transform:rotate(45deg);
+  }
+  .goal input[type=checkbox]:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+  .gtext{flex:1; font-size:14.5px; color:var(--text);}
+  .gtext strong{font-weight:600;}
+  .ts{
+    font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--amber-dim);
+    flex:0 0 auto; margin-top:2px; white-space:nowrap; opacity:0; transition:opacity .2s;
+  }
+  .goal.done .ts{opacity:1;}
+
+  /* ── Operating principles ── */
+  .principles{
+    margin-top:34px; background:var(--warm-panel);
+    border:1px solid #33280F; border-left:4px solid var(--amber);
+    border-radius:14px; padding:22px 24px;
+  }
+  .principles h2{
+    font-family:'Space Grotesk',sans-serif; font-weight:600; font-size:20px;
+    color:var(--amber); margin:0;
+  }
+  .principles .frame{color:#B9A876; font-size:13px; font-style:italic; margin:6px 0 16px;}
+  .principle{display:flex; gap:11px; align-items:flex-start; margin:9px 0; color:var(--warm-text); font-size:14px;}
+  .principle .mark{color:var(--amber); flex:0 0 auto; line-height:1.5;}
+  .principle strong{font-weight:600;}
+
+  /* ── Footer ── */
+  footer{
+    margin-top:34px; display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between;
+    gap:14px; border-top:1px solid var(--line); padding-top:18px;
+  }
+  .foot-note{font-family:'JetBrains Mono',monospace; font-size:11px; color:var(--dim); letter-spacing:.5px;}
+  .reset{
+    font-family:'JetBrains Mono',monospace; font-size:11px; letter-spacing:.5px;
+    color:var(--dim); background:transparent; border:1px solid var(--line-strong);
+    border-radius:7px; padding:7px 12px; cursor:pointer; transition:color .18s, border-color .18s;
+  }
+  .reset:hover{color:var(--text); border-color:var(--dim);}
+  .reset:focus-visible{outline:2px solid var(--teal); outline-offset:2px;}
+
+  @media (max-width:560px){
+    body{padding:0 14px 48px;}
+    .phase{padding-left:34px;}
+    .roadmap::before{left:6px;}
+    .node{left:-1px; width:16px; height:16px;}
+    .card{padding:16px 16px;}
+    .ts{width:100%; margin-top:4px;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="masthead">
+    <p class="eyebrow">DCT Advocacy · System Status</p>
+    <h1>DCT Advocacy Roadmap</h1>
+    <div class="h1-rule"></div>
+    <p class="sub">Mentorship with RJ Espina · Chief of Staff — becoming a DCT advocate at scale.</p>
+
+    <div class="telemetry">
+      <div class="ov-track"><div class="ov-fill" id="ovFill"></div></div>
+      <div class="ov-readout"><span class="dot"></span><b id="ovCount">0 / 20</b> GOALS ONLINE</div>
+    </div>
+  </header>
+
+  <main class="roadmap">
+
+    <!-- PHASE 0 -->
+    <section class="phase" data-phase="0">
+      <div class="node" aria-hidden="true"></div>
+      <div class="card">
+        <div class="phase-head">
+          <h2 class="phase-title">Phase 0 · Set the Foundation</h2>
+          <span class="chip">SETUP · FIRST SESSION</span>
+        </div>
+        <p class="why">Make the structure explicit so nothing runs on memory or luck.</p>
+        <div class="mini"><span class="mini-count">0 / 6</span><span class="mini-track"><span class="mini-fill"></span></span></div>
+        <div class="goals">
+          <label class="goal"><input type="checkbox" data-id="p0-1"><span class="gtext"><strong>Lock a recurring cadence</strong> (e.g., biweekly, same slot) — recurring beats "let's find time."</span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p0-2"><span class="gtext"><strong>Create a shared goals + action-items doc</strong> — your external working memory.</span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p0-3"><span class="gtext"><strong>Agree RJ sends a rough agenda</strong> ahead of each session — prep is your advantage.</span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p0-4"><span class="gtext"><strong>Ask for blunt, specific feedback</strong> — framed as how you work best.</span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p0-5"><span class="gtext"><strong>Bring 2–3 concrete goals</strong> to session one — not "mentor me."</span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p0-6"><span class="gtext"><strong>Name your differentiator out loud</strong> — former Enablement Analyst + current DCT.</span><span class="ts"></span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 1 -->
+    <section class="phase" data-phase="1">
+      <div class="node" aria-hidden="true"></div>
+      <div class="card">
+        <div class="phase-head">
+          <h2 class="phase-title">Phase 1 · Get the Lay of the Land</h2>
+          <span class="chip">~MONTH 1</span>
+        </div>
+        <p class="why">You can't pull levers you can't locate.</p>
+        <div class="mini"><span class="mini-count">0 / 5</span><span class="mini-track"><span class="mini-fill"></span></span></div>
+        <div class="goals">
+          <label class="goal"><input type="checkbox" data-id="p1-1"><span class="gtext"><strong>Map who owns training budgets.</strong></span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p1-2"><span class="gtext"><strong>Map who owns DCT career pathing.</strong></span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p1-3"><span class="gtext"><strong>Locate where enablement lives today.</strong></span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p1-4"><span class="gtext"><strong>Set "decode the implicit / political layer"</strong> as an explicit goal with RJ.</span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p1-5"><span class="gtext"><strong>Start a written recap after each session</strong> — your notes + proof of follow-through.</span><span class="ts"></span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 2 -->
+    <section class="phase" data-phase="2">
+      <div class="node" aria-hidden="true"></div>
+      <div class="card">
+        <div class="phase-head">
+          <h2 class="phase-title">Phase 2 · Learn to Move Things</h2>
+          <span class="chip">~MONTHS 2–3</span>
+        </div>
+        <p class="why">Influence, not authority, is how advocacy travels.</p>
+        <div class="mini"><span class="mini-count">0 / 3</span><span class="mini-track"><span class="mini-fill"></span></span></div>
+        <div class="goals">
+          <label class="goal"><input type="checkbox" data-id="p2-1"><span class="gtext"><strong>Learn to get DCT issues onto leadership's radar.</strong></span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p2-2"><span class="gtext"><strong>Practice tailoring the message upward</strong> for different audiences.</span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p2-3"><span class="gtext"><strong>Frame DCT pain in metrics</strong> — ramp time, incident/error reduction, retention.</span><span class="ts"></span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 3 -->
+    <section class="phase" data-phase="3">
+      <div class="node" aria-hidden="true"></div>
+      <div class="card">
+        <div class="phase-head">
+          <h2 class="phase-title">Phase 3 · Build the Case</h2>
+          <span class="chip">~MONTHS 3–4</span>
+        </div>
+        <p class="why">Turn grassroots resources into something the org adopts and funds.</p>
+        <div class="mini"><span class="mini-count">0 / 3</span><span class="mini-track"><span class="mini-fill"></span></span></div>
+        <div class="goals">
+          <label class="goal"><input type="checkbox" data-id="p3-1"><span class="gtext"><strong>Formalize your triage frameworks + cabling guides</strong> into a program concept.</span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p3-2"><span class="gtext"><strong>Build the data-backed business case</strong> for DCT advocacy.</span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p3-3"><span class="gtext"><strong>Get one resource officially adopted or standardized.</strong></span><span class="ts"></span></label>
+        </div>
+      </div>
+    </section>
+
+    <!-- PHASE 4 -->
+    <section class="phase" data-phase="4">
+      <div class="node" aria-hidden="true"></div>
+      <div class="card">
+        <div class="phase-head">
+          <h2 class="phase-title">Phase 4 · Scale &amp; Career</h2>
+          <span class="chip">~MONTHS 4–6+</span>
+        </div>
+        <p class="why">Design the role — don't just wait for it.</p>
+        <div class="mini"><span class="mini-count">0 / 3</span><span class="mini-track"><span class="mini-fill"></span></span></div>
+        <div class="goals">
+          <label class="goal"><input type="checkbox" data-id="p4-1"><span class="gtext"><strong>Map the route:</strong> DCT → training / L&amp;D or a dedicated advocate role.</span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p4-2"><span class="gtext"><strong>Draft a proposal to create the role</strong> if it doesn't exist yet.</span><span class="ts"></span></label>
+          <label class="goal"><input type="checkbox" data-id="p4-3"><span class="gtext"><strong>Land your first at-scale advocacy win.</strong></span><span class="ts"></span></label>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <section class="principles">
+    <h2>Operating Principles — How I Work Best</h2>
+    <p class="frame">AuDHD-informed working agreement. Request these as working style — disclosure is your call.</p>
+    <div class="principle"><span class="mark">✦</span><span><strong>Async is legitimate</strong> — "Let me think on that and follow up" is a valid answer.</span></div>
+    <div class="principle"><span class="mark">✦</span><span><strong>Prep is the edge</strong> — use agendas to synthesize ahead, not on the spot.</span></div>
+    <div class="principle"><span class="mark">✦</span><span><strong>Point the systematizing at the mentorship</strong> — the shared doc carries memory, not your head.</span></div>
+    <div class="principle"><span class="mark">✦</span><span><strong>Direct beats implied</strong> — ambiguous feedback is harder; ask for specifics.</span></div>
+    <div class="principle"><span class="mark">✦</span><span><strong>Disclosure is optional</strong> — you can request accommodations without naming a diagnosis.</span></div>
+    <div class="principle"><span class="mark">✦</span><span><strong>Traits are the pitch</strong> — systems thinking, deep focus, and unprompted resource-building are why you're credible for training/advocacy, including designing training that lands for ND learners.</span></div>
+  </section>
+
+  <footer>
+    <span class="foot-note">Living doc · progress saves in this browser · review each session</span>
+    <button class="reset" id="resetBtn" type="button">Reset progress</button>
+  </footer>
+
+</div>
+
+<script>
+(function(){
+  var KEY = 'dct-roadmap-v1';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('.goal input[type=checkbox]'));
+
+  function load(){
+    try { return JSON.parse(localStorage.getItem(KEY)) || {}; }
+    catch(e){ return {}; }
+  }
+  function save(state){
+    try { localStorage.setItem(KEY, JSON.stringify(state)); }
+    catch(e){ /* private mode / sandbox — falls back to in-session state */ }
+  }
+  var state = load();
+
+  function fmt(iso){
+    var d = new Date(iso);
+    if (isNaN(d)) return '';
+    var p = function(n){ return (n<10?'0':'')+n; };
+    return '\u2713 ' + d.getFullYear() + '-' + p(d.getMonth()+1) + '-' + p(d.getDate())
+         + ' ' + p(d.getHours()) + ':' + p(d.getMinutes());
+  }
+
+  function refreshPhase(phase){
+    var cbs = phase.querySelectorAll('.goal input[type=checkbox]');
+    var done = 0;
+    cbs.forEach(function(cb){ if(cb.checked) done++; });
+    var total = cbs.length;
+    phase.querySelector('.mini-count').textContent = done + ' / ' + total;
+    phase.querySelector('.mini-fill').style.width = total ? (done/total*100)+'%' : '0%';
+    phase.classList.toggle('online', total>0 && done===total);
+  }
+
+  function refreshOverall(){
+    var done = 0;
+    boxes.forEach(function(cb){ if(cb.checked) done++; });
+    var total = boxes.length;
+    document.getElementById('ovFill').style.width = total ? (done/total*100)+'%' : '0%';
+    document.getElementById('ovCount').textContent = done + ' / ' + total;
+  }
+
+  function applyOne(cb){
+    var id = cb.getAttribute('data-id');
+    var rec = state[id];
+    var label = cb.closest('.goal');
+    var ts = label.querySelector('.ts');
+    if (rec && rec.done){
+      cb.checked = true;
+      label.classList.add('done');
+      ts.textContent = rec.ts ? fmt(rec.ts) : '';
+    } else {
+      cb.checked = false;
+      label.classList.remove('done');
+      ts.textContent = '';
+    }
+  }
+
+  // init
+  boxes.forEach(applyOne);
+  document.querySelectorAll('.phase').forEach(refreshPhase);
+  refreshOverall();
+
+  // events
+  boxes.forEach(function(cb){
+    cb.addEventListener('change', function(){
+      var id = cb.getAttribute('data-id');
+      if (cb.checked){
+        state[id] = { done:true, ts:new Date().toISOString() };
+      } else {
+        delete state[id];
+      }
+      save(state);
+      applyOne(cb);
+      refreshPhase(cb.closest('.phase'));
+      refreshOverall();
+    });
+  });
+
+  document.getElementById('resetBtn').addEventListener('click', function(){
+    if (!confirm('Clear all progress on this roadmap?')) return;
+    state = {};
+    save(state);
+    boxes.forEach(applyOne);
+    document.querySelectorAll('.phase').forEach(refreshPhase);
+    refreshOverall();
+  });
+})();
+</script>
+</body>
+</html>
